@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en-US" class="ltr" dir="ltr">
+  <head>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+  <meta charset="utf-8">
+  <title>Calendar</title>
+  <link rel="stylesheet" type="text/css" href="/shared/style/headers.css">
+  <link rel="stylesheet" type="text/css" href="/shared/style/toolbars.css">
+  <link rel="stylesheet" type="text/css" href="/shared/style/tabs.css">
+  <link rel="stylesheet" type="text/css" href="/style/calendar.css">
+  <link rel="stylesheet" type="text/css" href="/style/ui.css">
+  <link rel="stylesheet" type="text/css" href="/style/day_views.css">
+  <link rel="stylesheet" type="text/css" href="/style/building_blocks.css">
+  <link rel="stylesheet" type="text/css" href="/style/first_time_use.css">
+
+  <!-- localization -->
+  
+  
+
+  <!--- shared scripts -->
+  <script defer="" src="/shared/js/l10n.js"></script>
+  <script defer="" src="/shared/js/accessibility_helper.js"></script>
+  <script defer="" src="/shared/js/gesture_detector.js"></script>
+  <script defer="" src="/shared/js/lazy_loader.js"></script>
+  <script defer="" src="/shared/js/l10n_date.js"></script>
+  <script defer="" src="/shared/js/notification_helper.js"></script>
+  <!-- Lazily Loaded
+  <script defer src="/shared/js/input_parser.js"></script>
+  -->
+
+  <script defer="" src="/js/ext/page.js"></script>
+  <script defer="" src="/js/ext/uuid.js"></script>
+
+  <!-- lib root must load before anything else -->
+  <script defer="" src="/js/calendar.js"></script>
+
+  <!--- utils -->
+  <script defer="" src="/js/presets.js"></script>
+  <script defer="" src="/js/error.js"></script>
+  <script defer="" src="/js/calc.js"></script>
+  <script defer="" src="/js/template.js"></script>
+  <script defer="" src="/js/responder.js"></script>
+  <script defer="" src="/js/view.js"></script>
+  <script defer="" src="/js/router.js"></script>
+  <script defer="" src="/js/db.js"></script>
+  <script defer="" src="/js/timespan.js"></script>
+  <script defer="" src="/js/time_observer.js"></script>
+  <script defer="" src="/js/interval_tree.js"></script>
+  <!--parsingicsfile-->
+  <script defer="" src="/js/IcsFileParser.js"></script>
+
+  <!--- providers -->
+  <script defer="" src="/js/provider/abstract.js"></script>
+  <script defer="" src="/js/provider/local.js"></script>
+  <script defer="" src="/js/provider/caldav.js"></script>
+  <script defer="" src="/js/provider/caldav_pull_events.js"></script>
+
+  <!-- It's possible to lazy load these, but we include them here to reduce flickering -->
+  <script defer="" src="/js/views/calendar_colors.js"></script>
+  <script defer="" src="/js/views/time_header.js"></script>
+  <script defer="" src="/js/templates/month.js"></script>
+  <script defer="" src="/js/templates/day.js"></script>
+  <script defer="" src="/js/views/month_child.js"></script>
+  <script defer="" src="/js/utils/ordered_map.js"></script>
+  <script defer="" src="/js/utils/overlap.js"></script>
+  <script defer="" src="/js/views/time_parent.js"></script>
+  <script defer="" src="/js/views/day_based.js"></script>
+  <script defer="" src="/js/views/month.js"></script>
+  <script defer="" src="/js/views/day_child.js"></script>
+  <script defer="" src="/js/views/months_day.js"></script>
+
+  <!--- store -->
+  <script defer="" src="/js/store/abstract.js"></script>
+  <script defer="" src="/js/store/busytime.js"></script>
+  <script defer="" src="/js/store/account.js"></script>
+  <script defer="" src="/js/store/calendar.js"></script>
+  <script defer="" src="/js/store/event.js"></script>
+  <script defer="" src="/js/store/setting.js"></script>
+  <script defer="" src="/js/store/alarm.js"></script>
+  <script defer="" src="/js/store/ical_component.js"></script>
+  <script defer="" src="/js/event_mutations.js"></script>
+
+  <!--- models -->
+  <script defer="" src="/js/models/account.js"></script>
+  <script defer="" src="/js/models/calendar.js"></script>
+  <script defer="" src="/js/models/event.js"></script>
+
+  <!-- workers / main / controller -->
+  <script defer="" src="/js/worker/manager.js"></script>
+  <script defer="" src="/js/controllers/service.js"></script>
+  <script defer="" src="/js/controllers/error.js"></script>
+  <script defer="" src="/js/controllers/time.js"></script>
+  <script defer="" src="/js/controllers/sync.js"></script>
+  <script defer="" src="/js/controllers/alarm.js"></script>
+  <script defer="" src="/js/app.js"></script>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+<link rel="prefetch" type="application/l10n" href="/locales-obj/{{locale}}.json"></head>
+
+<body role="application" class="loading">
+
+<section id="lazy-styles"><!--
+	<link rel="stylesheet" type="text/css" href="/style/forms.css">
+	<link rel="stylesheet" type="text/css" href="/style/overlay.css">
+	<link rel="stylesheet" type="text/css" href="/shared/style/buttons.css">
+	<link rel="stylesheet" type="text/css" href="/shared/style/confirm.css">
+	<link rel="stylesheet" type="text/css" href="/shared/style/switches.css">
+	<link rel="stylesheet" type="text/css" href="/shared/style/status.css">
+	<link rel="stylesheet" type="text/css" href="/shared/style/progress_activity.css">
+  --></section>
+<section id="errors" role="status"><!--
+  <p class="errors"></p>
+  --></section>
+<section class="skin-dark" id="settings" role="region"><!--
+    <header>
+      <menu type="toolbar">
+        <a href="/select-preset/">
+          <span class="icon icon-add">Create Account</span>
+        </a>
+      </menu>
+      <h1 data-l10n-id="settings-header">Calendars</h1>
+    </header>
+
+    <ol class="calendars">
+    </ol>
+
+    <div role="toolbar">
+      <ul>
+        <li>
+          <a class="settings" href="/advanced-settings/" data-l10n-id="advanced-settings">
+            Account Settings
+          </a>
+        </li>
+      </ul>
+
+      <ul class="end">
+        <li>
+          <button class="sync update">
+            <span class="icon">Sync</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+  --></section>
+
+<section id="time-views" role="region">
+  <header id="time-header">
+    <button class="settings">
+      <span class="icon icon-menu">Show Settings</span>
+    </button>
+
+    <menu type="toolbar">
+      <a href="/event/add/">
+        <span data-l10n-id="new-event" class="icon icon-add">Add event</span>
+      </a>
+    </menu>
+
+    <h1 id="current-month-year">
+    </h1>
+  </header>
+
+  <div id="progress-indicator">
+    <div id="throbber"></div>
+  </div>
+
+  <div id="hint-swipe-to-navigate" class="hint hide">
+    <div class="hint-swipe-text">
+      <strong data-l10n-id="hint-swipe-action">Swipe</strong>
+      <span data-l10n-id="hint-swipe-to-navigate">to navigate between calendar dates.</span>
+    </div>
+    <div class="hint-swipe-image"></div>
+  </div>
+
+  <section id="month-view" role="tabpanel" aria-labelledby="month">
+  </section>
+
+  <!---
+  When a day is selected you have
+  access to the details here
+  -->
+  <section id="months-day-view" role="tabpanel" aria-labelledby="today">
+    <section id="event-list" class="day-events">
+    </section>
+  </section>
+
+  <section id="day-view" role="tabpanel" aria-labelledby="day"></section>
+
+  <section id="week-view" role="tabpanel" aria-labelledby="week"></section>
+
+  <ul id="view-selector" role="tablist" class="bb-tablist">
+    <li class="today" role="presentation"><a role="tab" aria-selected="false" aria-controls="months-day-view" id="today" data-l10n-id="show-today" href="#today">Today</a></li>
+    <li class="month" role="presentation"><a role="tab" aria-selected="true" aria-controls="month-view" id="month" data-l10n-id="show-month-view" href="/month/">Month</a></li>
+    <li class="week" role="presentation"><a role="tab" aria-selected="false" aria-controls="week-view" id="week" data-l10n-id="show-week-view" href="/week/">Week</a></li>
+    <li class="day" role="presentation"><a role="tab" aria-selected="false" aria-controls="day-view" id="day" data-l10n-id="show-day-view" href="/day/">Day</a></li>
+  </ul>
+
+</section>
+
+<section class="fullscreen-view skin-organic" id="create-account-view" role="region"><!--
+    <header>
+      <button class="cancel">
+        <span data-l10n-id="cancel" class="icon icon-back">Cancel</span>
+      </button>
+
+      <h1 data-l10n-id="add-account">
+        Add an account
+      </h1>
+    </header>
+
+    <ol id="create-account-presets" class="link-list"></ol>
+  --></section>
+<section class="fullscreen-view in-progress skin-organic" role="region" id="advanced-settings-view"><!--
+    <header>
+      <menu type="toolbar">
+        <a href="/settings/">
+          <span data-l10n-id="done">Done</span>
+        </a>
+      </menu>
+      <h1 data-l10n-id="advanced-settings-header">Calendar Settings</h1>
+    </header>
+
+    <section class="content">
+      <div class="errors"></div>
+
+      <header class="account-list-header">
+        <h2 data-l10n-id="account-list-header">
+          Accounts
+        </h2>
+      </header>
+
+      <ol class="account-list link-list">
+      </ol>
+
+      <header>
+        <h2 data-l10n-id="advanced-settings-personalization">
+          Personalization
+        </h2>
+      </header>
+
+      <ol class="settings-list link-list">
+        <li>
+          <label>
+            <span data-l10n-id="sync-frequency">Sync Calendar</span>
+            <span class="button icon icon-dialog">
+              <select id="setting-sync-frequency" name="syncFrequency">
+                <option data-l10n-id="sync-frequency-15min" value="15">15 min</option>
+                <option data-l10n-id="sync-frequency-30min" value="30">30 min</option>
+                <option data-l10n-id="sync-frequency-manual" value="null">Manual</option>
+              </select>
+            </span>
+          </label>
+        </li>
+      </ol>
+
+      <header>
+        <h2 data-l10n-id="advanced-settings-reminders">
+          Reminders
+        </h2>
+      </header>
+
+      <ol class="settings-list link-list">
+        <li>
+          <label id="default-event-alarm">
+            <span data-l10n-id="events">Events</span>
+            <span class="button icon icon-dialog"></span>
+          </label>
+        </li>
+        <li>
+          <label id="default-allday-alarm">
+            <span data-l10n-id="allday-events">All-day Events</span>
+            <span class="button icon icon-dialog"></span>
+          </label>
+        </li>
+      </ol>
+    </section>
+  --></section>
+<section class="fullscreen-view" id="modify-event-view" role="region"><!--
+    <header>
+      <button class="cancel">
+        <span data-l10n-id="cancel" class="icon icon-back">Cancel</span>
+      </button>
+
+      <menu type="toolbar">
+        <button class="save">
+          <span data-l10n-id="save" class="save-text">Save</span>
+          <span data-l10n-id="done" class="done-text">Done</span>
+        </button>
+      </menu>
+
+      <h1 data-l10n-id="add-event-header">
+        Create Event
+      </h1>
+    </header>
+
+    <form>
+      <ol>
+        <li class="title">
+          <input name="title" data-l10n-id="event-title" x-inputmode="latin-prose" placeholder="Title">
+        </li>
+
+        <li class="location">
+          <input name="location" data-l10n-id="event-location" x-inputmode="latin-prose" placeholder="Where?">
+        </li>
+
+        <li class="allday">
+          <label class="pack-checkbox">
+            <input name="allday" type="checkbox">
+            <span data-l10n-id="event-is-allday">All Day Event?</span>
+          </label>
+        </li>
+
+        <li class="start-date">
+          <span class="button icon icon-dialog">
+            <label>
+              <input name="startDate" data-l10n-id="event-start-date" placeholder="Date" class="hidden-input" type="date">
+            </label>
+            <span class="datetime" id="start-date-locale"></span>
+          </span>
+        </li>
+
+        <li class="start-time">
+          <span class="button icon icon-dialog">
+            <label>
+              <input data-l10n-id="event-start-time" placeholder="Start Time" name="startTime" class="hidden-input" type="time">
+            </label>
+            <span class="datetime" id="start-time-locale"></span>
+          </span>
+        </li>
+
+        <li class="end-date">
+          <span class="button icon icon-dialog">
+            <label>
+              <input name="endDate" data-l10n-id="event-end-date" placeholder="Date" class="hidden-input" type="date">
+            </label>
+            <span class="datetime" id="end-date-locale"></span>
+          </span>
+        </li>
+
+        <li class="end-time">
+          <span class="button icon icon-dialog">
+            <label>
+              <input data-l10n-id="event-end-time" placeholder="End Time" name="endTime" class="hidden-input" type="time">
+            </label>
+            <span class="datetime" id="end-time-locale"></span>
+          </span>
+        </li>
+
+        <li class="current-calendar">
+          <span class="button icon icon-dialog" aria-disabled="true">
+            <input name="currentCalendar">
+          </span>
+        </li>
+
+        <li class="calendar-id">
+          <span class="button icon icon-dialog">
+            <select name="calendarId">
+            </select>
+          </span>
+        </li>
+
+        <li>
+          <h3 data-l10n-id="remind-me">Remind me</h3>
+          <div class="alarms">
+          </div>
+        </li>
+
+        <li class="notes">
+          <textarea class="fieldbox" name="description" data-l10n-id="event-description" x-inputmode="latin-prose" placeholder="Notes"></textarea>
+        </li>
+
+        <li class="delete">
+          <a role="button" data-l10n-id="event-delete" class="danger delete-record">
+            Delete Event
+          </a>
+        </li>
+
+      </ol>
+
+      <section role="status">
+        <p class="errors"></p>
+      </section>
+    </form>
+  --></section>
+<section class="fullscreen-view" id="event-view" role="region"><!--
+    <header>
+      <button class="cancel">
+        <span data-l10n-id="cancel" class="icon icon-back">Cancel</span>
+      </button>
+
+      <menu type="toolbar">
+        <button class="edit">
+          <span data-l10n-id="edit">Edit</span>
+        </button>
+      </menu>
+
+      <h1 data-l10n-id="add-event-header">
+        Event
+      </h1>
+    </header>
+
+    <section data-type="list">
+      <ul>
+        <li class="title">
+          <h1><span class="content"></span></h1>
+        </li>
+
+        <li class="location">
+          <span class="content"></span>
+        </li>
+
+        <li class="current-calendar">
+          <span class="content"></span>
+        </li>
+
+        <li class="start-date">
+          <span data-l10n-id="from-time">From: </span>
+          <span class="content"></span>
+          <span class="start-time">
+            <span class="content"></span>
+          </span>
+        </li>
+
+        <li class="end-date">
+          <span data-l10n-id="to-time">To: </span>
+          <span class="content"></span>
+          <span class="end-time">
+            <span class="content"></span>
+          </span>
+        </li>
+
+        <li class="alarms">
+          <h2 data-l10n-id="remind-me">Remind me</h2>
+          <span class="content"></span>
+        </li>
+
+        <li class="description">
+          <strong>Notes</strong><br>
+          <span class="content"></span>
+        </li>
+      </ul>
+    </section>
+  --></section>
+<section class="fullscreen-view skin-dark" id="oauth2" role="region"><!--
+    <header>
+      <button class="cancel">
+        <span data-l10n-id="back" class="cancel icon icon-back">Back</span>
+      </button>
+      <h1 class="oauth-browser-title">
+        &nbsp;
+      </h1>
+    </header>
+    <div class="browser-container">
+    </div>
+  --></section>
+<section class="fullscreen-view skin-organic" id="modify-account-view" role="region"><!--
+    <header>
+      <button class="cancel">
+        <span data-l10n-id="back" class="cancel icon icon-back">Back</span>
+      </button>
+
+      <menu type="toolbar">
+        <button class="save">
+          <span data-l10n-id="save">Save</span>
+        </button>
+      </menu>
+
+      <h1 data-l10n-id="account-header">Account</h1>
+    </header>
+
+    <section class="during-progress">
+      <div>
+        <progress class="small"></progress>
+        <span data-l10n-id="modify-account-setting-up">SeTtiNg uP ACcOunt</span>
+      </div>
+    </section>
+
+    <form>
+      <fieldset>
+        <ol>
+          <li class="user">
+            <input name="user" data-l10n-id="field-user" x-inputmode="verbatim" placeholder="Username">
+          </li>
+          <li class="password">
+            <input name="password" data-l10n-id="field-password" placeholder="Password" type="password">
+          </li>
+          <li class="full-url">
+            <input name="fullUrl" data-l10n-id="field-full-url" placeholder="URL" type="url">
+
+          </li>
+          <li class="sync-errors">
+            <p data-l10n-id="modify-account-unable-to-sync">&gt;uNaBle to SynC</p>
+          </li>
+          <li class="oauth2-sign-in">
+            <button data-l10n-id="modify-account-sign-in" class="force-oauth2"></button>
+          </li>
+          <li>
+            <a data-l10n-id="remove-account-data" role="button" href="#remove-account-dialog" class="danger delete-record">
+              Remove Local Data
+            </a>
+          </li>
+        </ol>
+      </fieldset>
+    </form>
+
+    <section role="status">
+      <p class="errors"></p>
+    </section>
+
+    <form role="dialog" data-type="confirm" id="remove-account-dialog">
+      <section>
+        <h1 data-l10n-id="remove-account-dialog">Remove Account</h1>
+        <p data-l10n-id="remove-account-dialog-details">
+          Removing this account will also remove your local copy of associated calendars and events.
+        </p>
+      </section>
+      <menu>
+        <button class="delete-cancel" data-l10n-id="cancel">Cancel</button>
+        <button class="danger delete-confirm" data-l10n-id="confirm">Confirm</button>
+      </menu>
+    </form>
+  --></section></body>
+  
+  <script src="/js/filedrag.js"></script>
+  
+  <script type="application/l10n" lang="ar">
+  {"new-event":"إضافة حدث","hint-swipe-action":"مرر بإصبعك","hint-swipe-to-navigate":"للتنقل بين تواريخ التقويم.","show-today":"اليوم","show-month-view":"شهر","show-week-view":"أسبوع","show-day-view":"يوم"}
+</script><script type="application/l10n" lang="bg">
+  {"new-event":"Добавяне на събитие","hint-swipe-action":"Плъзнете","hint-swipe-to-navigate":"за да навигирате между датите.","show-today":"Днес","show-month-view":"Месец","show-week-view":"Седмица","show-day-view":"Ден"}
+</script><script type="application/l10n" lang="bn-BD">
+  {"new-event":"অনুষ্ঠান যোগ করো","hint-swipe-action":"সুইপ","hint-swipe-to-navigate":"ক্যালেন্ডারের তারিখ ন্যাভিগেট করতে।","show-today":"আজ","show-month-view":"মাস","show-week-view":"সপ্তাহ","show-day-view":"দিন"}
+</script><script type="application/l10n" lang="ca">
+  {"new-event":"Afegeix una cita","hint-swipe-action":"Feu lliscar el dit","hint-swipe-to-navigate":"per navegar per les dates del calendari.","show-today":"Avui","show-month-view":"Mes","show-week-view":"Setmana","show-day-view":"Dia"}
+</script><script type="application/l10n" lang="cs">
+  {"new-event":"Přidat událost","hint-swipe-action":"Přejížděním","hint-swipe-to-navigate":"přecházíte mezi daty v kalendáři.","show-today":"Dnes","show-month-view":"Měsíc","show-week-view":"Týden","show-day-view":"Den"}
+</script><script type="application/l10n" lang="da">
+  {"new-event":"Tilføj en begivenhed","hint-swipe-action":"Stryg","hint-swipe-to-navigate":"for at navigere mellem datoer.","show-today":"I dag","show-month-view":"Måned","show-week-view":"Uge","show-day-view":"Dag"}
+</script><script type="application/l10n" lang="de">
+  {"new-event":"Termin hinzufügen","hint-swipe-action":"Wischen","hint-swipe-to-navigate":"Sie seitlich, um zeitlich zu blättern.","show-today":"Heute","show-month-view":"Monat","show-week-view":"Woche","show-day-view":"Tag"}
+</script><script type="application/l10n" lang="el">
+  {"new-event":"Προσθήκη δραστηριότητας","hint-swipe-action":"Σύρετε","hint-swipe-to-navigate":"για να πλοηγηθείτε σε διαφορετικές ημερομηνίες.","show-today":"Σήμερα","show-month-view":"Μήνας","show-week-view":"Εβδομάδα","show-day-view":"Ημέρα"}
+</script><script type="application/l10n" lang="es">
+  {"new-event":"Agregar evento","hint-swipe-action":"Deslice","hint-swipe-to-navigate":"para navegar entre fechas del calendario.","show-today":"Hoy","show-month-view":"Mes","show-week-view":"Semana","show-day-view":"Día"}
+</script><script type="application/l10n" lang="eu">
+  {"new-event":"Gehitu gertaera","hint-swipe-action":"Pasatu","hint-swipe-to-navigate":"egutegiko egunen artean nabigatzeko.","show-today":"Gaur","show-month-view":"Hilabetea","show-week-view":"Astea","show-day-view":"Eguna"}
+</script><script type="application/l10n" lang="fr">
+  {"new-event":"Ajouter un évènement","hint-swipe-action":"Faites glisser","hint-swipe-to-navigate":"pour naviguer dans l’agenda.","show-today":"Aujourd’hui","show-month-view":"Mois","show-week-view":"Semaine","show-day-view":"Jour"}
+</script><script type="application/l10n" lang="gl">
+  {"new-event":"Engadir evento","hint-swipe-action":"Deslice o dedo","hint-swipe-to-navigate":"para navegar polas datas do calendario.","show-today":"Hoxe","show-month-view":"Mes","show-week-view":"Semana","show-day-view":"Día"}
+</script><script type="application/l10n" lang="hr">
+  {"new-event":"Dodaj događaj","hint-swipe-action":"Povucite","hint-swipe-to-navigate":"za navigaciju između datuma.","show-today":"Danas","show-month-view":"Mjesec","show-week-view":"Tjedan","show-day-view":"Dan"}
+</script><script type="application/l10n" lang="hu">
+  {"new-event":"Esemény hozzáadása","hint-swipe-action":"Csúsztassa az ujját","hint-swipe-to-navigate":"dátumok közötti navigáláshoz.","show-today":"Ma","show-month-view":"Hónap","show-week-view":"Hét","show-day-view":"Nap"}
+</script><script type="application/l10n" lang="it">
+  {"new-event":"Aggiungi evento","hint-swipe-action":"Passa il dito","hint-swipe-to-navigate":"per cambiare la data visualizzata.","show-today":"Oggi","show-month-view":"Mese","show-week-view":"Settimana","show-day-view":"Giorno"}
+</script><script type="application/l10n" lang="ja">
+  {"new-event":"予定追加","hint-swipe-action":"スワイプ","hint-swipe-to-navigate":"してカレンダーの日付を移動できます。","show-today":"今日","show-month-view":"月","show-week-view":"週","show-day-view":"日"}
+</script><script type="application/l10n" lang="km">
+  {"new-event":"បន្ថែម​ព្រឹត្តិការណ៍","hint-swipe-action":"អូស","hint-swipe-to-navigate":"ដើម្បី​រកមើល​កាលបរិច្ឆេទ​ប្រតិទិន។","show-today":"ថ្ងៃ​នេះ","show-month-view":"ខែ","show-week-view":"សប្ដាហ៍","show-day-view":"ថ្ងៃ"}
+</script><script type="application/l10n" lang="ko">
+  {"new-event":"이벤트 추가","hint-swipe-action":"쓸어넘기기","hint-swipe-to-navigate":"달력의 날짜를 이동합니다.","show-today":"오늘","show-month-view":"월간","show-week-view":"주간","show-day-view":"일간"}
+</script><script type="application/l10n" lang="lt">
+  {"new-event":"Pridėti įvykį","hint-swipe-action":"Braukite","hint-swipe-to-navigate":"per ekraną, kai norėsite pereiti į kitą datą.","show-today":"Šiandiena","show-month-view":"Mėnuo","show-week-view":"Savaitė","show-day-view":"Diena"}
+</script><script type="application/l10n" lang="mk">
+  {"new-event":"Додај настан","hint-swipe-action":"Влечете","hint-swipe-to-navigate":"за да се движите низ датумите.","show-today":"Денес","show-month-view":"Месец","show-week-view":"Недела","show-day-view":"Ден"}
+</script><script type="application/l10n" lang="ms">
+  {"new-event":"Tambah acara","hint-swipe-action":"Leret","hint-swipe-to-navigate":"untuk navigasi antara tarikh kalendar.","show-today":"Hari ini","show-month-view":"Bulan","show-week-view":"Minggu","show-day-view":"Hari"}
+</script><script type="application/l10n" lang="ne-NP">
+  {"new-event":"घटना थप्नुहोस्","hint-swipe-action":"स्वाट्ट","hint-swipe-to-navigate":"पात्रोका मितीहरु बिच चल्नुहोस्।","show-today":"आज","show-month-view":"महिना","show-week-view":"हप्ता","show-day-view":"दिन"}
+</script><script type="application/l10n" lang="nl">
+  {"new-event":"Gebeurtenis toevoegen","hint-swipe-action":"Veeg","hint-swipe-to-navigate":"om tussen agendadatums te navigeren.","show-today":"Vandaag","show-month-view":"Maand","show-week-view":"Week","show-day-view":"Dag"}
+</script><script type="application/l10n" lang="pa">
+  {"new-event":"ਘਟਨਾ ਜੋੜੋ","hint-swipe-action":"ਘਸਾਓ","hint-swipe-to-navigate":"ਕੈਲੰਡਰ ਮਿਤੀਆਂ ਵਿੱਚ ਜਾਣ ਲਈ।","show-today":"ਅੱਜ","show-month-view":"ਮਹੀਨਾ","show-week-view":"ਹਫ਼ਤਾ","show-day-view":"ਦਿਨ"}
+</script><script type="application/l10n" lang="pl">
+  {"new-event":"Dodaj wydarzenie","hint-swipe-action":"Przesuń palcem","hint-swipe-to-navigate":", aby przejść do innej daty.","show-today":"Dzisiaj","show-month-view":"Miesiąc","show-week-view":"Tydzień","show-day-view":"Dzień"}
+</script><script type="application/l10n" lang="pt-BR">
+  {"new-event":"Adicionar evento","hint-swipe-action":"Arraste","hint-swipe-to-navigate":"para navegar entre datas.","show-today":"Hoje","show-month-view":"Mês","show-week-view":"Semana","show-day-view":"Dia"}
+</script><script type="application/l10n" lang="ro">
+  {"new-event":"Adaugă eveniment","hint-swipe-action":"Glisează","hint-swipe-to-navigate":"pentru a naviga între datele calendaristice.","show-today":"Astăzi","show-month-view":"Lună","show-week-view":"Săptămână","show-day-view":"Zi"}
+</script><script type="application/l10n" lang="ru">
+  {"new-event":"Добавить событие","hint-swipe-action":"Проведите пальцем","hint-swipe-to-navigate":"для перехода между календарными датами.","show-today":"Сегодня","show-month-view":"Месяц","show-week-view":"Неделя","show-day-view":"День"}
+</script><script type="application/l10n" lang="sk">
+  {"new-event":"Pridať udalosť","hint-swipe-action":"Potiahnutím prstom","hint-swipe-to-navigate":"prechádzate medzi jednotlivými dňami kalendára.","show-today":"Dnes","show-month-view":"Mesiac","show-week-view":"Týždeň","show-day-view":"Deň"}
+</script><script type="application/l10n" lang="sq">
+  {"new-event":"Shtoni ngjarje","hint-swipe-action":"Rrëshqitni gishtin","hint-swipe-to-navigate":"që të lëvizni nëpër data kalendari.","show-today":"Sot","show-month-view":"Muaj","show-week-view":"Javë","show-day-view":"Ditë"}
+</script><script type="application/l10n" lang="sr-Cyrl">
+  {"new-event":"Додај догађај","hint-swipe-action":"Превуците","hint-swipe-to-navigate":"да бисте се кретали између датума.","show-today":"Данас","show-month-view":"Месец","show-week-view":"Недеља","show-day-view":"Дан"}
+</script><script type="application/l10n" lang="sr-Latn">
+  {"new-event":"Dodaj događaj","hint-swipe-action":"Prevucite","hint-swipe-to-navigate":"da biste se kretali između datuma.","show-today":"Danas","show-month-view":"Mesec","show-week-view":"Nedelja","show-day-view":"Dan"}
+</script><script type="application/l10n" lang="sv-SE">
+  {"new-event":"Lägg till händelse","hint-swipe-action":"Dra","hint-swipe-to-navigate":"för att navigera mellan datum i kalendern.","show-today":"Idag","show-month-view":"Månad","show-week-view":"Vecka","show-day-view":"Dag"}
+</script><script type="application/l10n" lang="tr">
+  {"new-event":"Etkinlik ekle","hint-swipe-action":"Kaydırarak","hint-swipe-to-navigate":"takvim tarihleri arasında gezinebilirsiniz.","show-today":"Bugün","show-month-view":"Ay","show-week-view":"Hafta","show-day-view":"Gün"}
+</script><script type="application/l10n" lang="zh-CN">
+  {"new-event":"新建事件","hint-swipe-action":"滑动","hint-swipe-to-navigate":"在日历不同日期之间浏览。","show-today":"今天","show-month-view":"月","show-week-view":"周","show-day-view":"日"}
+</script><script type="application/l10n" lang="zh-TW">
+  {"new-event":"新增事件","hint-swipe-action":"滑動","hint-swipe-to-navigate":"以在不同日期間切換。","show-today":"今天","show-month-view":"月","show-week-view":"週","show-day-view":"日"}
+</script><script type="application/l10n" lang="en-US">
+  {}
+</script>
+</html>

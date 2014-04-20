@@ -4,36 +4,26 @@
 	<meta charset="UTF-8" />
 	<title>ICS</title>
 	<script src="IcsFileParser.js"></script>
-
 </head>
 <body>
-
 <div>
-	<form id="upload" action="index.html" method="POST" enctype="multipart/form-data">
-		<fieldset>
-			<legend>Upload Your calendar :</legend>
+	<form id="upload" action="index.html" method="POST" enctype="multipart/form-data"><fieldset>
+	<legend>Upload Your calendar :</legend>
 
-			<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="300000" />
-			<div>	
-				<input type="file" id="fileselect" name="fileselect[]"/>			
-			</div>
+	<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="300000" />
+	    <div>	
+		     <input type="file" id="fileselect" name="fileselect[]"/>			
+	    </div>
 
-			<div id="submitbutton">
-				<button type="submit">Upload Files</button>
-			</div>
+	    <div id="submitbutton">
+		     <button type="submit">Upload Files</button>
+	     </div>
 
 			<div id="messages">
-			</div>
-
-		</fieldset>
-
-	
-
-	</form>
+			</div></fieldset></form>
 </div>
 </body>
 <footer>
 <script src="filedrag.js"></script>
-
 </footer>
 </html>
