@@ -27,3 +27,31 @@ icalParser.ical.journals;
 //All the freebusy elements
 icalParser.ical.freebusy;
 ----------------------------
+in action 
+
+
+icalParser.parseIcal(ical_formatted_text);
+
+//icalParser.ical is now set
+icalParser.ical.version; 
+icalParser.ical.prodid;
+
+ for(var key in icalParser.ical.events)
+	 {
+         console.log("------");
+		 console.log("Event N°"+key+ " : ");
+	     console.log("DSTART VALUE : " +icalParser.ical.events[key].dtstart['value']);
+	     console.log("DSTAMP VALUE : " +icalParser.ical.events[key].dtstamp['value']);
+	     console.log("DTEND VALUE : " +icalParser.ical.events[key].dtend['value']);
+	     console.log("UID VALUE : " +icalParser.ical.events[key].uid['value']);
+         console.log("------");	 
+	 }	
+
+
+
+
+
+
+
+-----------
+
