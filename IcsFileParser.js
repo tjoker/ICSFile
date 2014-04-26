@@ -25,7 +25,11 @@ var icalParser={
 					
 			}
 		}	 
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> 142725815a4d1260bba1dc048752648ecac2989a
 		reg=/BEGIN:VTODO(\r?\n[^B].*)+/g;
 		matches=icsString.match(reg);
 		if(matches){
@@ -150,12 +154,13 @@ var icalParser={
 	parseVevent: function(veventString){
 		////PROCHAINE VERSION: Générer seul les propriétés trouvées : + rapide
 		var event={
-			klass:this.getValue('CLASS',veventString), //This property defines the access classification for a calendar component.
-			created:this.getValue('CREATED',veventString), //This property specifies the date and time that the calendar information was created by the calendar user agent in the calendar store.
+			//klass:this.getValue('CLASS',veventString), //This property defines the access classification for a calendar component.
+			//created:this.getValue('CREATED',veventString), //This property specifies the date and time that the calendar information was created by the calendar user agent in the calendar store.
 			description:this.getValue('DESCRIPTION',veventString), //This property provides a more complete description of the calendar component, than that provided by the "SUMMARY" property.
-			geo:this.getValue('GEO',veventString), //This property specifies information related to the global position for the activity specified by a calendar component.
-			lastmod:this.getValue('LAST-MODIFIED',veventString), //The property specifies the date and time that the information associated with the calendar component was last revised in the calendar store.
+			//geo:this.getValue('GEO',veventString), //This property specifies information related to the global position for the activity specified by a calendar component.
+			//lastmod:this.getValue('LAST-MODIFIED',veventString), //The property specifies the date and time that the information associated with the calendar component was last revised in the calendar store.
 			location:this.getValue('LOCATION',veventString), //The property defines the intended venue for the activity defined by a calendar component.
+<<<<<<< HEAD
 			organizer:this.getValue('ORGANIZER',veventString), //The property defines the organizer for a calendar component.
 			priority:this.getValue('PRIORITY',veventString), //The property defines the relative priority for a calendar component.
 			dtstamp:this.getValue('DTSTAMP',veventString), //The property indicates the date/time that the instance of the iCalendar object was created.
@@ -178,15 +183,46 @@ var icalParser={
 			rdate:this.getValue('RDATE',veventString,true), //This property defines the list of date/times for a recurrence set.
 			rrule:this.getValue('RRULE',veventString,true), //This property defines a rule or repeating pattern for recurring events, to-dos, or time zone definitions.
 			xprop:this.getValue('X-',veventString,true), //
+=======
+			//organizer:this.getValue('ORGANIZER',veventString), //The property defines the organizer for a calendar component.
+			//priority:this.getValue('PRIORITY',veventString), //The property defines the relative priority for a calendar component.
+			//dtstamp:this.getValue('DTSTAMP',veventString), //The property indicates the date/time that the instance of the iCalendar object was created.
+			//seq:this.getValue('SEQUENCE',veventString), //This property defines the revision sequence number of the calendar component within a sequence of revisions.
+			//status:this.getValue('STATUS',veventString), //This property defines the overall status or confirmation for the calendar component.
+			//transp:this.getValue('TRANSP',veventString), //This property defines whether an event is transparent or not to busy time searches.
+			//url:this.getValue('URL',veventString), //This property defines a Uniform Resource Locator (URL) associated with the iCalendar object.
+			//recurid:this.getValue('RECURRENCE-ID',veventString), //This property is used in conjunction with the "UID" and "SEQUENCE" property to identify a specific instance of a recurring "VEVENT", "VTODO" or "VJOURNAL" calendar component. The property value is the effective value of the "DTSTART" property of the recurrence instance.
+	    //duration:this.getValue('DURATION',veventString), //The property specifies a positive duration of time.
+		//	attach:this.getValue('ATTACH',veventString,true), //The property provides the capability to associate a document object with a calendar component.
+		//	attendee:this.getValue('ATTENDEE',veventString,true), //The property defines an "Attendee" within a calendar component.
+		//	categories:this.getValue('CATEGORIES',veventString,true), //This property defines the categories for a calendar component.
+		//	comment:this.getValue('COMMENT',veventString,true), //This property specifies non-processing information intended to provide a comment to the calendar user.			
+		//	contact:this.getValue('CONTACT',veventString,true), //The property is used to represent contact information or alternately a reference to contact information associated with the calendar component.
+		//	exdate:this.getValue('EXDATE',veventString,true), //This property defines the list of date/time exceptions for a recurring calendar component.
+		//	exrule:this.getValue('EXRULE',veventString,true), //This property defines a rule or repeating pattern for an exception to a recurrence set.
+		//	rstatus:this.getValue('REQUEST-STATUS',veventString,true), //This property defines the status code returned for a scheduling request.			
+		// 	related:this.getValue('RELATED',veventString,true), //To specify the relationship of the alarm trigger with respect to the start or end of the calendar component.
+		//	resources:this.getValue('RESOURCES',veventString,true), //This property defines the equipment or resources anticipated for an activity specified by a calendar entity..
+		//	rdate:this.getValue('RDATE',veventString,true), //This property defines the list of date/times for a recurrence set.
+		//	rrule:this.getValue('RRULE',veventString,true), //This property defines a rule or repeating pattern for recurring events, to-dos, or time zone definitions.
+		//	xprop:this.getValue('X-',veventString,true), //
+>>>>>>> 142725815a4d1260bba1dc048752648ecac2989a
 			uid:this.getValue('UID',veventString), //This property defines the persistent, globally unique identifier for the calendar component.
 			summary:this.getValue('SUMMARY',veventString), //This property defines a short summary or subject for the calendar component.
 			dtstart:this.getValue('DTSTART',veventString), //This property specifies when the calendar component begins.
 			dtend:this.getValue('DTEND',veventString), //This property specifies the date and time that a calendar component ends.
 			trigger:this.getValue('TRIGGER',veventString), //time for riging alarms
+<<<<<<< HEAD
 			action:this.getValue('ACTION',veventString), //display or not the alarm	
 		};
 		this.ical.events[this.ical.events.length]=event;
 		//console.log("uid parser : "+event.uid.value);
+=======
+			action:this.getValue('ACTION',veventString), //display or not the alarm		
+		};
+		this.ical.events[this.ical.events.length]=event;
+		
+>>>>>>> 142725815a4d1260bba1dc048752648ecac2989a
 	},
 	getValue: function(propName,txt,multiple){
 	
