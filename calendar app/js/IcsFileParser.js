@@ -8,7 +8,7 @@ var icalParser={
 		freebusys:[]
 	},
 	parseIcal: function(icsString){
-	console.log("test");
+	//console.log("test");
 	
 		this.ical.version=this.getValue('VERSION',icsString);
 		this.ical.prodid=this.getValue('PRODID',icsString);
@@ -169,7 +169,7 @@ var icalParser={
 		//	exdate:this.getValue('EXDATE',veventString,true), //This property defines the list of date/time exceptions for a recurring calendar component.
 		//	exrule:this.getValue('EXRULE',veventString,true), //This property defines a rule or repeating pattern for an exception to a recurrence set.
 		//	rstatus:this.getValue('REQUEST-STATUS',veventString,true), //This property defines the status code returned for a scheduling request.			
-		 	related:this.getValue('RELATED',veventString,true), //To specify the relationship of the alarm trigger with respect to the start or end of the calendar component.
+		 //	related:this.getValue('RELATED',veventString,true), //To specify the relationship of the alarm trigger with respect to the start or end of the calendar component.
 		//	resources:this.getValue('RESOURCES',veventString,true), //This property defines the equipment or resources anticipated for an activity specified by a calendar entity..
 		//	rdate:this.getValue('RDATE',veventString,true), //This property defines the list of date/times for a recurrence set.
 		//	rrule:this.getValue('RRULE',veventString,true), //This property defines a rule or repeating pattern for recurring events, to-dos, or time zone definitions.
@@ -213,8 +213,8 @@ var icalParser={
 						tab_params[pair[0]] = pair[1];
 					}
 				}
-				console.log(valeur);
-				console.log(tab_params);
+				//console.log(valeur);
+				//console.log(tab_params);
 				return {
 					value:valeur,
 					params:tab_params
