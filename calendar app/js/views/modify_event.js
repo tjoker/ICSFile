@@ -485,7 +485,6 @@ Calendar.ns('Views').ModifyEvent = (function() {
         });
 
       }
-
       return fields;
     },
 
