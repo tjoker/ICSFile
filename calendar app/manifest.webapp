@@ -1,11 +1,11 @@
 {
   "name": "Calendar",
-  "description": "Gaia Calendar",
+  "description": "Gaia Calendar with ICS",
   "type": "certified",
   "launch_path": "/index.html",
   "developer": {
-    "name": "The Gaia Team",
-    "url": "https://github.com/mozilla-b2g/gaia"
+    "name": "The Gaia Team ics LAVABRE Clement(clement-lavabre@hotmail.fr)  NADARASA Pirashanthan(n.pirashanthan@hotmail.fr) James Rouffort(james.rouffort@gmail.com)",
+    "url": "https://github.com/tjoker/ICSFile"
   },
   "messages": [
     {
@@ -180,6 +180,7 @@
     "60": "/style/icons/Calendar_60.png",
     "90": "/style/icons/Calendar_90.png",
     "120": "/style/icons/Calendar_120.png",
+	"128": "/style/icons/Calendar_128.png",
     "135": "/style/icons/Calendar_135.png"
   },
   "orientation": "default"
