@@ -158,7 +158,7 @@ var icalParser={
 			location:this.getValue('LOCATION',veventString), //The property defines the intended venue for the activity defined by a calendar component.
 			//organizer:this.getValue('ORGANIZER',veventString), //The property defines the organizer for a calendar component.
 			//priority:this.getValue('PRIORITY',veventString), //The property defines the relative priority for a calendar component.
-			dtstamp:this.getValue('DTSTAMP',veventString), //The property indicates the date/time that the instance of the iCalendar object was created.
+			//dtstamp:this.getValue('DTSTAMP',veventString), //The property indicates the date/time that the instance of the iCalendar object was created.
 			//seq:this.getValue('SEQUENCE',veventString), //This property defines the revision sequence number of the calendar component within a sequence of revisions.
 			//status:this.getValue('STATUS',veventString), //This property defines the overall status or confirmation for the calendar component.
 			//transp:this.getValue('TRANSP',veventString), //This property defines whether an event is transparent or not to busy time searches.
