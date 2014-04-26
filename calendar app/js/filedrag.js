@@ -36,6 +36,12 @@
 		if (icalParser.ical.events[key].description==null || icalParser.ical.events[key]=== undefined || icalParser.ical.events[key].description=== undefined)  console.log("description  null/undefined" );
 		else console.log("Descritpion VALUE : " +icalParser.ical.events[key].description['value']);
 		
+		if (icalParser.ical.events[key].location==null || icalParser.ical.events[key]=== undefined || icalParser.ical.events[key].location=== undefined)  console.log("location null/undefined" );
+		else console.log("location VALUE : " +icalParser.ical.events[key].location['value']);
+		
+		if (icalParser.ical.events[key].summary==null || icalParser.ical.events[key]=== undefined || icalParser.ical.events[key].summary=== undefined)  console.log("summary  null/undefined" );
+		else console.log("summary VALUE : " +icalParser.ical.events[key].summary['value']);
+		
 		if (icalParser.ical.events[key].trigger==null || icalParser.ical.events[key]=== undefined || icalParser.ical.events[key].trigger=== undefined)  console.log("trigger  null/undefined" );
 		else console.log("Trigger VALUE : " +icalParser.ical.events[key].trigger['value']);
 		

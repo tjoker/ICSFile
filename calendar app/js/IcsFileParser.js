@@ -155,7 +155,7 @@ var icalParser={
 			description:this.getValue('DESCRIPTION',veventString), //This property provides a more complete description of the calendar component, than that provided by the "SUMMARY" property.
 			//geo:this.getValue('GEO',veventString), //This property specifies information related to the global position for the activity specified by a calendar component.
 			//lastmod:this.getValue('LAST-MODIFIED',veventString), //The property specifies the date and time that the information associated with the calendar component was last revised in the calendar store.
-			//location:this.getValue('LOCATION',veventString), //The property defines the intended venue for the activity defined by a calendar component.
+			location:this.getValue('LOCATION',veventString), //The property defines the intended venue for the activity defined by a calendar component.
 			//organizer:this.getValue('ORGANIZER',veventString), //The property defines the organizer for a calendar component.
 			//priority:this.getValue('PRIORITY',veventString), //The property defines the relative priority for a calendar component.
 			dtstamp:this.getValue('DTSTAMP',veventString), //The property indicates the date/time that the instance of the iCalendar object was created.
@@ -179,7 +179,7 @@ var icalParser={
 		//	rrule:this.getValue('RRULE',veventString,true), //This property defines a rule or repeating pattern for recurring events, to-dos, or time zone definitions.
 		//	xprop:this.getValue('X-',veventString,true), //
 			uid:this.getValue('UID',veventString), //This property defines the persistent, globally unique identifier for the calendar component.
-		//	summary:this.getValue('SUMMARY',veventString), //This property defines a short summary or subject for the calendar component.
+			summary:this.getValue('SUMMARY',veventString), //This property defines a short summary or subject for the calendar component.
 			dtstart:this.getValue('DTSTART',veventString), //This property specifies when the calendar component begins.
 			dtend:this.getValue('DTEND',veventString), //This property specifies the date and time that a calendar component ends.
 			trigger:this.getValue('TRIGGER',veventString), //time for riging alarms
