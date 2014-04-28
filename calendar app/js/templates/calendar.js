@@ -25,7 +25,7 @@
 		  '<label class="pack-checkbox"><span id="loadcalendar" class="name">Load calendar file :'+
 		  '</span><form id="upload" action="index.html" method="POST" enctype="multipart/form-data">'+
 		  '<fieldset><input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="300000" /><div>'+
-		  '<input type="file" id="fileselect" name="fileselect[]"/></div><div id="submitbutton"><button type="submit">Upload Files</button>'+
+		  '<input type="file" id="fileselect" name="fileselect[]"/></div>'+
 		  '</div><div id="messages"></div></fieldset></form>'+
 		
 		  '</label>'+

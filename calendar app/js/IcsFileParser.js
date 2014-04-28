@@ -8,7 +8,15 @@ var icalParser={
 		freebusys:[]
 	},
 	parseIcal: function(icsString){
-	//console.log("test");
+	
+	this.ical={
+		version:'',
+		prodid:'',
+		events:[],
+		todos:[],
+		journals:[],
+		freebusys:[]
+	};
 	
 		this.ical.version=this.getValue('VERSION',icsString);
 		this.ical.prodid=this.getValue('PRODID',icsString);
